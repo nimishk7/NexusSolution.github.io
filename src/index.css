@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FF6A00; /* DWC Orange */
+  --color-secondary: #EAB308; /* Industrial Yellow */
+  --color-tertiary: #3B82F6; /* Tech Blue */
+  --color-dark-bg: #0A0A0A; /* Deep Dark */
+  --color-darker-bg: #000000; /* Pitch Black */
+  --color-light-text: #F3F4F6; /* Light gray for text */
+  --color-mute-gray: #6B7280; /* Gray 500 */
+  
+  --font-sans: "Helvetica Neue", Helvetica, sans-serif;
+
+  --animate-fade-up: fadeUp 0.8s ease-out forwards;
+  --animate-scale-reveal: scaleReveal 1s ease-out forwards;
+  --animate-pulse-glow: pulseGlow 2s infinite;
+  --animate-shimmer: shimmer 1.5s infinite;
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleReveal {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: initial; /* Lenis handles smooth scroll */
+  }
+  
+  body {
+    @apply bg-dark-bg text-light-text font-sans antialiased overflow-x-hidden transition-colors duration-500;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/50 transition-all duration-300;
+  }
+  
+  .glass-card {
+    @apply bg-[#111111]/80 shadow-2xl shadow-black border border-white/5 backdrop-blur-md rounded-2xl;
+  }
+  
+  .glow-border {
+    @apply relative after:absolute after:inset-0 after:rounded-2xl after:border-2 after:border-primary/0 after:transition-colors after:duration-500 hover:after:border-primary/50;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 106, 0, 0.5);
+  }
+}
+
+/* Lenis Recommended CSS */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Swiper Infinite Slider Customizations */
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+/* Modal Open Animation Class */
+.modal-open {
+  overflow: hidden;
+}
