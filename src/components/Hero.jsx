@@ -25,7 +25,7 @@ const Hero = () => {
         className="absolute inset-0 z-0 object-cover w-full h-full scale-[1.1]"
       >
         <img
-          src="/images/hero_bg.png"
+          src="/images/hero_bg2.png"
           alt="Nexus Solutions Manufacturing Facility"
           className="w-full h-full object-cover"
         />

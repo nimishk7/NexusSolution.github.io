@@ -10,7 +10,6 @@ const images = [
   "/images/hdpe_pipe_1774629154510.png",
   "/images/spacers_2_1774633777182.png",
   "/images/Img4.jfif",
-  "/images/coupler_1774629366293.png",
   "/images/dwc_pipe_2_1774633674688.png",
   "/images/perforated_pvc_pipe_1774629504936.png",
   "/images/moulded_fittings_1774629682092.png",
@@ -20,10 +19,7 @@ const images = [
   "/images/o_pvc_pipe_1774629591757.png",
   "/images/Img5.jfif",
   "/images/rubber_rings_1774629435204.png",
-  "/images/coupler_2_1774633807175.png",
   "/images/Img3.jfif",
-  "/images/fabricated_fittings_1774629759533.png",
-  "/images/spacers_1774629290159.png",
   "/images/perforated_pvc_pipe_2_1774633881443.png",
 ];
 

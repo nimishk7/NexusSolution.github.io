@@ -17,9 +17,9 @@ const Footer = () => {
           <div className="col-span-1 lg:col-span-2 pr-0 lg:pr-12">
             <div className="flex items-center gap-3 mb-6">
               <img
-                src="/images/nexus_logo_new.png"
+                src="/images/logo2.png"
                 alt="Nexus Solutions Logo"
-                className="h-15 brightness-200 opacity-90"
+                className="h-10"
               />
             </div>
             <p className="text-sm leading-relaxed mb-6">

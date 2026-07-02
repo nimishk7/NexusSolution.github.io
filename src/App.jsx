@@ -10,6 +10,8 @@ import Gallery from './components/Gallery';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
 
+import { Toaster } from 'react-hot-toast';
+
 function App() {
   
   // Initialize Lenis Smooth Scroll
@@ -40,6 +42,7 @@ function App() {
   return (
     <HelmetProvider>
       <div className="bg-dark-bg min-h-screen text-white font-sans selection:bg-primary selection:text-white">
+        <Toaster position="top-right" reverseOrder={false} />
         {/* SEO Setup */}
         <Helmet>
           <title>Nexus Solutions | Industrial Plastic Pipe Infrastructure</title>

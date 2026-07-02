@@ -7,6 +7,8 @@ import {
   HiChatAlt2,
 } from "react-icons/hi";
 import Button from "./Button";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-hot-toast";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -16,8 +18,44 @@ const ContactUs = () => {
     message: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const templateParams = {
+      user_name: formData.name,
+      user_email: formData.email,
+      user_phone: formData.phone,
+      message: formData.message,
+    };
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      toast.success("Message sent successfully!");
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleWhatsApp = () => {
@@ -54,10 +92,10 @@ const ContactUs = () => {
             className="glass-card p-8 md:p-12 rounded-3xl"
           >
             <h3 className="text-2xl font-bold mb-8 uppercase tracking-wide">
-              Send a Message
+              Send a Inquiry 
             </h3>
 
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="relative group">
                 <input
                   type="text"
@@ -137,8 +175,13 @@ const ContactUs = () => {
               </div>
 
               <div className="pt-4 flex flex-col sm:flex-row gap-4">
-                <Button type="submit" variant="primary" className="flex-1">
-                  Submit Inquiry
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  className="flex-1"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Submit Inquiry"}
                 </Button>
                 <button
                   type="button"
