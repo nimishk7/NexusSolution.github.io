@@ -75,7 +75,7 @@ const Hero = () => {
           className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-10"
         >
           Pioneering smart underground drainage, cable protection, and
-          customized plastic piping solutions with over 15 years of industry
+          customized plastic piping solutions with over 15+ years of industry
           excellence.
         </motion.p>
 
