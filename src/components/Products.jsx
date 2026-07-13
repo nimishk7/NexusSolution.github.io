@@ -100,15 +100,15 @@ const ProductCard = ({ product, onSelect }) => {
         
         {/* Sliding Images with cross-fade animation */}
         <div className="w-full h-full relative">
-          <AnimatePresence mode="wait">
+          {/* mode="sync" lets the new image mount immediately — prevents blocking touch events on mobile */}
+          <AnimatePresence mode="sync">
             <motion.img 
               key={currentImgIndex}
               src={product.images[currentImgIndex]} 
               alt={`${product.title} view ${currentImgIndex + 1}`} 
               initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: 0.7 } }}
+              exit={{ opacity: 0, transition: { duration: 0.3 } }}
               className="absolute inset-0 w-full h-full object-cover"
             />
           </AnimatePresence>
@@ -127,7 +127,8 @@ const ProductCard = ({ product, onSelect }) => {
         )}
       </div>
 
-      <div className="p-6 md:p-8 relative z-20 bg-linear-to-t from-[#050505] via-[#111]/95 to-[#111]/80 -mt-10 backdrop-blur-xl border-t border-white/5">
+      {/* backdrop-blur removed — it's GPU-expensive on mobile Safari and causes tap delay */}
+      <div className="p-6 md:p-8 relative z-20 bg-linear-to-t from-[#060606] via-[#111] to-[#111]/90 -mt-10 border-t border-white/5">
         <h3 className="text-xl font-bold mb-3 uppercase tracking-wide group-hover:text-primary transition-colors text-white">
           {product.title}
         </h3>
