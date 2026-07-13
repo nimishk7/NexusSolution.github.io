@@ -50,14 +50,14 @@ const AboutUs = () => {
               </span>
             </h2>
             <p className="text-white/80 text-base md:text-lg leading-relaxed mb-6">
-              With over 30+ years of experience, Nexus Solutions specializes in supplying a comprehensive range of Double Wall Corrugated (DWC) Pipes, from standard non-perforated pipes to perforated pipes with geotextile. We also provide custom pipe accessories engineered for underground drainage, sewerage, and cable protection networks.
+              With over 15+ years of experience, Nexus Solutions specializes in supplying a comprehensive range of Double Wall Corrugated (DWC) Pipes, from standard non-perforated pipes to perforated pipes with geotextile. We also provide custom pipe accessories engineered for underground drainage, sewerage, and cable protection networks.
             </p>
             <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 border-l-2 border-primary pl-4">
               Our commitment to quality assurance and continuous engineering innovation ensures that every product we deliver meets the highest global standards for rigidity, flexibility, and longevity.
             </p>
 
             <div className="grid grid-cols-2 gap-6 w-full lg:w-4/5 pt-4">
-               <StatCard value="30+" label="Years Experience" delay={0.2} />
+               <StatCard value="15+" label="Years Experience" delay={0.2} />
                <StatCard value="100%" label="Quality Assured" delay={0.4} />
             </div>
           </motion.div>
