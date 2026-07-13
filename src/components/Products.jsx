@@ -85,7 +85,7 @@ const ProductCard = ({ product, onSelect }) => {
     if (!product.images || product.images.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentImgIndex((prev) => (prev + 1) % product.images.length);
-    }, 3500); // changes every 3.5 seconds
+    }, 2500); // changes every 3.5 seconds
     return () => clearInterval(interval);
   }, [product.images]);
 
@@ -161,18 +161,36 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const scrollContainerRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      const progress = scrollWidth > clientWidth ? (scrollLeft / (scrollWidth - clientWidth)) * 100 : 0;
-      setScrollProgress(progress);
+    const container = scrollContainerRef.current;
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const oneThird = scrollWidth / 3;
+
+      // Handle seamless wrap-around at extreme edges
+      if (scrollLeft < 10) {
+        container.style.scrollBehavior = 'auto';
+        container.scrollLeft = scrollLeft + oneThird;
+        container.style.scrollBehavior = 'smooth';
+      } else if (scrollLeft > scrollWidth - clientWidth - 10) {
+        container.style.scrollBehavior = 'auto';
+        container.scrollLeft = scrollLeft - oneThird;
+        container.style.scrollBehavior = 'smooth';
+      }
+
+      // Calculate progress based on relative position within a single set
+      const relativeScrollLeft = scrollLeft % oneThird;
+      const maxRelativeScroll = oneThird - clientWidth;
+      const progress = maxRelativeScroll > 0 ? (relativeScrollLeft / maxRelativeScroll) * 100 : 0;
+      setScrollProgress(Math.min(Math.max(progress, 0), 100));
     }
   };
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400; // Matches approximate card width + gap
+      const scrollAmount = 412; // Matches card width (380px) + gap (32px)
       scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
@@ -181,8 +199,43 @@ const Products = () => {
   };
 
   useEffect(() => {
-    handleScroll();
+    const container = scrollContainerRef.current;
+    if (container) {
+      const handleInitialPosition = () => {
+        const oneThird = container.scrollWidth / 3;
+        container.scrollLeft = oneThird;
+        handleScroll();
+      };
+      const timer = setTimeout(handleInitialPosition, 100);
+      return () => clearTimeout(timer);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isHovered || !inView) return;
+
+    let intervalId = null;
+
+    // Start auto-scroll after 3.5 seconds
+    const delayTimeout = setTimeout(() => {
+      intervalId = setInterval(() => {
+        if (scrollContainerRef.current) {
+          const container = scrollContainerRef.current;
+          container.scrollBy({
+            left: 412, // Approximate card width + gap
+            behavior: 'smooth'
+          });
+        }
+      }, 3500);
+    }, 3500);
+
+    return () => {
+      clearTimeout(delayTimeout);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isHovered, inView]);
 
   return (
     <section id="products" className="py-24 bg-[#050505] text-white relative overflow-hidden">
@@ -209,7 +262,12 @@ const Products = () => {
         </motion.div>
 
         {/* Carousel Container Wrapper */}
-        <div ref={ref} className="relative group/scroll px-2 md:px-8">
+        <div 
+          ref={ref} 
+          className="relative group/scroll px-2 md:px-8"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           {/* Navigation Buttons (Desktop only) */}
           <button 
             onClick={() => scroll('left')}
@@ -249,9 +307,9 @@ const Products = () => {
               }
             `}</style>
             
-            {products.map((product) => (
+            {[...products, ...products, ...products].map((product, index) => (
               <ProductCard 
-                key={product.id}
+                key={`${product.id}-${index}`}
                 product={product}
                 onSelect={setSelectedProduct}
               />
