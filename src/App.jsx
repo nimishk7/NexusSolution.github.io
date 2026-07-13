@@ -3,6 +3,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Lenis from 'lenis';
 import { AnimatePresence } from 'framer-motion';
 import LoadingScreen from './components/LoadingScreen';
+import StructuredData from './components/StructuredData';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -59,17 +60,44 @@ function App() {
       </AnimatePresence>
       <div className="bg-dark-bg min-h-screen text-white font-sans selection:bg-primary selection:text-white">
         <Toaster position="top-right" reverseOrder={false} />
-        {/* SEO Setup */}
+        {/* SEO Meta Tags */}
         <Helmet>
-          <title>Nexus Solutions | Industrial Plastic Pipe Infrastructure</title>
-          <meta name="description" content="Premium DWC, HDPE pipes, Couplers, and Spacer Manufacturers. Supplying durable underground drainage and cable protection infrastructure." />
-          <meta name="keywords" content="HDPE Pipe Manufacturer, DWC Pipe Manufacturer, Plastic Pipe Supplier, Coupler Manufacturer, Spacer Manufacturer, Infrastructure Pipe Solutions India" />
-          <meta property="og:title" content="Nexus Solutions | Advanced Pipe Manufacturing" />
-          <meta property="og:description" content="High-tech engineering and supply of Double Wall Corrugated and HDPE piping systems." />
-          <meta property="og:image" content="/images/factory_about.png" />
+          {/* Primary */}
+          <title>Nexus Solutions | DWC &amp; HDPE Pipe Manufacturer in Sangli, Maharashtra</title>
+          <meta name="description" content="Nexus Solutions, Sangli — Manufacturer &amp; supplier of DWC Pipes, HDPE Pipelines, Couplers, Spacer Products &amp; STP MBBR Media. 15+ years of infrastructure excellence. Call +91 92845 93597." />
+          <meta name="keywords" content="DWC Pipe Manufacturer Sangli, HDPE Pipe Supplier Maharashtra, Double Wall Corrugated Pipe, Coupler Fittings Manufacturer, Spacer Products, STP MBBR Media, Underground Drainage Pipe India, Cable Protection Pipe, Nexus Solutions Sangli" />
+          <meta name="robots" content="index, follow" />
+          <meta name="author" content="Nexus Solutions" />
+          <link rel="canonical" href="https://nexus-solutions.co.in/" />
+
+          {/* Open Graph */}
           <meta property="og:type" content="website" />
-          <html lang="en" />
+          <meta property="og:url" content="https://nexus-solutions.co.in/" />
+          <meta property="og:site_name" content="Nexus Solutions" />
+          <meta property="og:locale" content="en_IN" />
+          <meta property="og:title" content="Nexus Solutions | DWC &amp; HDPE Pipe Manufacturer in Sangli" />
+          <meta property="og:description" content="Manufacturer &amp; supplier of DWC Pipes, HDPE Pipelines, Couplers, Spacer Products &amp; STP MBBR Media in Sangli, Maharashtra. 15+ years of excellence." />
+          <meta property="og:image" content="https://nexus-solutions.co.in/images/factory_about.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content="Nexus Solutions Manufacturing Facility, Sangli" />
+
+          {/* Twitter Card */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Nexus Solutions | DWC &amp; HDPE Pipe Manufacturer in Sangli" />
+          <meta name="twitter:description" content="Manufacturer &amp; supplier of DWC Pipes, HDPE Pipelines, Couplers &amp; more. Based in Sangli, Maharashtra." />
+          <meta name="twitter:image" content="https://nexus-solutions.co.in/images/factory_about.png" />
+
+          {/* Geo / Local SEO */}
+          <meta name="geo.region" content="IN-MH" />
+          <meta name="geo.placename" content="Sangli, Maharashtra, India" />
+          <meta name="geo.position" content="16.8524;74.5815" />
+          <meta name="ICBM" content="16.8524, 74.5815" />
+          <meta name="contact" content="nexussangli24@gmail.com" />
         </Helmet>
+
+        {/* Structured Data (JSON-LD for Google) */}
+        <StructuredData />
 
         {/* Layout */}
         <Navbar />

@@ -1,0 +1,4 @@
+User-agent: *  
+Allow: /  
+  
+Sitemap: https://nexus-solutions.co.in/sitemap.xml 

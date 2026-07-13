@@ -105,7 +105,8 @@ const ProductCard = ({ product, onSelect }) => {
             <motion.img 
               key={currentImgIndex}
               src={product.images[currentImgIndex]} 
-              alt={`${product.title} view ${currentImgIndex + 1}`} 
+              alt={`${product.title} by Nexus Solutions, Sangli Maharashtra — view ${currentImgIndex + 1}`}
+              loading="lazy"
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1, transition: { duration: 0.7 } }}
               exit={{ opacity: 0, transition: { duration: 0.3 } }}

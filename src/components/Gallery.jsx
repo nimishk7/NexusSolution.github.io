@@ -133,7 +133,7 @@ const Gallery = () => {
               <div className="w-full h-full relative">
                 <img
                   src={src}
-                  alt={`Project Showcase ${index + 1}`}
+                  alt={`Nexus Solutions Product Gallery — DWC Pipes, HDPE Pipelines, Couplers, Spacers, Sangli Maharashtra — Image ${index + 1}`}
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />

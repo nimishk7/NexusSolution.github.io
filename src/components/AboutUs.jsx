@@ -74,7 +74,8 @@ const AboutUs = () => {
             <div className="w-full h-full relative rounded-3xl overflow-hidden glass shadow-2xl shadow-primary/20">
               <img 
                 src="/images/factory_about.png" 
-                alt="Nexus Manufacturing Plant" 
+                alt="Nexus Solutions Modern Assembly Line for DWC and HDPE Pipe Manufacturing, Sangli Maharashtra" 
+                loading="lazy"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-out"
               />
               {/* Overlay Gradient */}

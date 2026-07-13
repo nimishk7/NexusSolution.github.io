@@ -26,7 +26,9 @@ const Hero = () => {
       >
         <img
           src="/images/hero_bg2.png"
-          alt="Nexus Solutions Manufacturing Facility"
+          alt="Nexus Solutions DWC and HDPE Pipe Manufacturing Facility, Sangli Maharashtra"
+          fetchpriority="high"
+          loading="eager"
           className="w-full h-full object-cover"
         />
         {/* Dark overlay for DWC Theme */}
