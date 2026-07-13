@@ -71,7 +71,7 @@ const Navbar = () => {
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="flex items-center gap-3 relative z-10 group">
-          <img src="/images/logo2.png" alt="Nexus Solutions" className="h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105" />
+          <img id="navbar-logo" src="/images/logo2.png" alt="Nexus Solutions" className="h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105" />
         </a>
 
         {/* Desktop Links */}

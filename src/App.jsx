@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Lenis from 'lenis';
+import { AnimatePresence } from 'framer-motion';
+import LoadingScreen from './components/LoadingScreen';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -13,7 +15,18 @@ import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   
+  // Lock/unlock scroll during loading
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isLoading]);
+
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
@@ -41,6 +54,9 @@ function App() {
 
   return (
     <HelmetProvider>
+      <AnimatePresence>
+        {isLoading && <LoadingScreen onFinish={() => setIsLoading(false)} />}
+      </AnimatePresence>
       <div className="bg-dark-bg min-h-screen text-white font-sans selection:bg-primary selection:text-white">
         <Toaster position="top-right" reverseOrder={false} />
         {/* SEO Setup */}
