@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiX, HiChevronLeft, HiChevronRight, HiZoomIn } from "react-icons/hi";
 
@@ -42,13 +42,44 @@ const images = [
   "/images/Img5.jfif",
 ];
 
+/* -- Shimmer Skeleton ------------------------------------------------ */
+const ShimmerSkeleton = () => (
+  <div className="shimmer-skeleton" aria-hidden="true" />
+);
+
+/* -- Lightbox Spinner ----------------------------------------------- */
+const LightboxSpinner = () => (
+  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+    <div className="gallery-spinner" role="status" aria-label="Loading image" />
+  </div>
+);
+
 const Gallery = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showAllModal, setShowAllModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Track which thumbnail images have finished loading (by their key index)
+  const [loadedImages, setLoadedImages] = useState(new Set());
+
+  // Whether the current lightbox image is still loading
+  const [lightboxLoading, setLightboxLoading] = useState(false);
+
+  // View More button brief loading pulse until modal is visible
+  const [viewMoreLoading, setViewMoreLoading] = useState(false);
+
+  /* -- Handlers ------------------------------------------------------ */
+  const markImageLoaded = useCallback((key) => {
+    setLoadedImages((prev) => {
+      const next = new Set(prev);
+      next.add(key);
+      return next;
+    });
+  }, []);
+
   const openModal = (index) => {
     setCurrentIndex(index);
+    setLightboxLoading(true);
     setModalOpen(true);
     document.body.style.overflow = "hidden";
   };
@@ -61,8 +92,13 @@ const Gallery = () => {
   };
 
   const openAllModal = () => {
-    setShowAllModal(true);
-    document.body.style.overflow = "hidden";
+    setViewMoreLoading(true);
+    // Small delay so the button loading state is visible before modal mounts
+    setTimeout(() => {
+      setShowAllModal(true);
+      setViewMoreLoading(false);
+      document.body.style.overflow = "hidden";
+    }, 300);
   };
 
   const closeAllModal = () => {
@@ -74,11 +110,13 @@ const Gallery = () => {
 
   const nextSlide = useCallback((e) => {
     e?.stopPropagation();
+    setLightboxLoading(true);
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   }, []);
 
   const prevSlide = useCallback((e) => {
     e?.stopPropagation();
+    setLightboxLoading(true);
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   }, []);
 
@@ -111,7 +149,7 @@ const Gallery = () => {
           className="text-center"
         >
           <h2 className="text-3xl md:text-5xl font-black mb-6 uppercase tracking-[0.2em] text-white">
-            Project <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-primary filter drop-shadow-[0_0_10px_rgba(255,106,0,0.5)]">Showcase</span>
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-primary filter drop-shadow-[0_0_10px_rgba(255,106,0,0.5)]">Gallery</span>
           </h2>
           <div className="w-24 h-1 bg-linear-to-r from-secondary via-primary to-transparent mx-auto mb-6 rounded-full"></div>
           <p className="max-w-2xl mx-auto text-gray-400 text-lg">
@@ -121,57 +159,82 @@ const Gallery = () => {
         </motion.div>
       </div>
 
+      {/* -- Main Grid (first 10) --------------------------------------- */}
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-          {images.slice(0, 10).map((src, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="w-full aspect-square relative group cursor-pointer overflow-hidden rounded-2xl bg-[#111111] border border-white/10 hover:border-primary/50 transition-colors shadow-xl hover:shadow-2xl hover:shadow-primary/20"
-              onClick={() => openModal(index)}
-            >
-              <div className="w-full h-full relative">
-                <img
-                  src={src}
-                  alt={`Nexus Solutions Product Gallery — DWC Pipes, HDPE Pipelines, Couplers, Spacers, Sangli Maharashtra — Image ${index + 1}`}
-                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                  loading="lazy"
-                />
+          {images.slice(0, 10).map((src, index) => {
+            const isLoaded = loadedImages.has(index);
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="w-full aspect-square relative group cursor-pointer overflow-hidden rounded-2xl bg-[#111111] border border-white/10 hover:border-primary/50 transition-colors shadow-xl hover:shadow-2xl hover:shadow-primary/20"
+                onClick={() => openModal(index)}
+              >
+                <div className="w-full h-full relative">
+                  {/* Shimmer placeholder - hidden once image has loaded */}
+                  {!isLoaded && <ShimmerSkeleton />}
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center backdrop-blur-[2px]">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-4 bg-primary/90 rounded-full text-white shadow-lg backdrop-blur-md"
-                  >
-                    <HiZoomIn size={32} />
-                  </motion.div>
-                  <span className="mt-4 font-semibold tracking-wide text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    View Project
-                  </span>
+                  <img
+                    src={src}
+                    alt={`Nexus Solutions Product Gallery -- DWC Pipes, HDPE Pipelines, Couplers, Spacers, Sangli Maharashtra -- Image ${index + 1}`}
+                    className={`w-full h-full object-cover transform transition-all duration-700 group-hover:scale-110 ${
+                      isLoaded ? "opacity-100" : "opacity-0"
+                    }`}
+                    loading="lazy"
+                    onLoad={() => markImageLoaded(index)}
+                  />
+
+                  {/* Hover Overlay - only rendered when image is visible */}
+                  {isLoaded && (
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center backdrop-blur-[2px]">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-4 bg-primary/90 rounded-full text-white shadow-lg backdrop-blur-md"
+                      >
+                        <HiZoomIn size={32} />
+                      </motion.div>
+                      <span className="mt-4 font-semibold tracking-wide text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        View Project
+                      </span>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
-        
+
+        {/* -- View More Button ----------------------------------------- */}
         {images.length > 10 && (
           <div className="mt-12 text-center">
             <button
               onClick={openAllModal}
-              className="text-white hover:text-primary underline underline-offset-8 decoration-2 hover:decoration-primary transition-colors text-lg font-medium tracking-wide"
+              disabled={viewMoreLoading || showAllModal}
+              className="relative inline-flex items-center gap-2 text-white hover:text-primary underline underline-offset-8 decoration-2 hover:decoration-primary transition-colors text-lg font-medium tracking-wide disabled:cursor-wait"
             >
-              View More
+              {viewMoreLoading ? (
+                <>
+                  <span
+                    className="inline-block w-4 h-4 rounded-full border-2 border-white/20 border-t-primary"
+                    style={{ animation: "spin-smooth 0.9s linear infinite" }}
+                    aria-hidden="true"
+                  />
+                  Loading&hellip;
+                </>
+              ) : (
+                "View More"
+              )}
             </button>
           </div>
         )}
       </div>
 
-      {/* All Images Grid Modal */}
+      {/* -- All Images Grid Modal --------------------------------------- */}
       <AnimatePresence>
         {showAllModal && (
           <motion.div
@@ -189,42 +252,58 @@ const Gallery = () => {
                 <HiX size={32} />
               </button>
             </div>
-            
+
             <div className="container mx-auto px-4 md:px-6 pb-20">
               <h3 className="text-3xl md:text-4xl font-black mb-12 text-center uppercase tracking-widest text-white">
                 All <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-primary filter drop-shadow-[0_0_10px_rgba(255,106,0,0.5)]">Images</span>
               </h3>
-              
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                {images.map((src, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: (index % 10) * 0.05 }}
-                    className="w-full aspect-square relative group cursor-pointer overflow-hidden rounded-2xl bg-[#111111] border border-white/10 hover:border-primary/50 transition-colors shadow-xl"
-                    onClick={() => openModal(index)}
-                  >
-                    <div className="w-full h-full relative">
-                      <img
-                        src={src}
-                        alt={`All Project Showcase ${index + 1}`}
-                        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <HiZoomIn size={32} className="text-white" />
+                {images.map((src, index) => {
+                  // Modal images use an offset key-space (1000+) to not collide with main grid
+                  const modalKey = index + 1000;
+                  const isLoaded = loadedImages.has(modalKey);
+
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: (index % 10) * 0.05 }}
+                      className="w-full aspect-square relative group cursor-pointer overflow-hidden rounded-2xl bg-[#111111] border border-white/10 hover:border-primary/50 transition-colors shadow-xl"
+                      onClick={() => openModal(index)}
+                    >
+                      <div className="w-full h-full relative">
+                        {/* Shimmer placeholder */}
+                        {!isLoaded && <ShimmerSkeleton />}
+
+                        <img
+                          src={src}
+                          alt={`All Project Showcase ${index + 1}`}
+                          className={`w-full h-full object-cover transform transition-all duration-700 group-hover:scale-110 ${
+                            isLoaded ? "opacity-100" : "opacity-0"
+                          }`}
+                          loading="lazy"
+                          onLoad={() => markImageLoaded(modalKey)}
+                        />
+
+                        {/* Hover overlay */}
+                        {isLoaded && (
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <HiZoomIn size={32} className="text-white" />
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Lightbox Modal */}
+      {/* -- Lightbox Modal --------------------------------------------- */}
       <AnimatePresence mode="wait">
         {modalOpen && (
           <motion.div
@@ -271,10 +350,17 @@ const Gallery = () => {
               className="relative max-w-6xl w-full max-h-[85vh] h-full flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Orange glowing spinner while image loads */}
+              {lightboxLoading && <LightboxSpinner />}
+
               <img
+                key={images[currentIndex]}
                 src={images[currentIndex]}
                 alt={`Expanded Project ${currentIndex + 1}`}
-                className="max-w-full max-h-full object-contain rounded-xl shadow-[0_0_50px_rgba(255,106,0,0.15)] border border-white/5"
+                className={`max-w-full max-h-full object-contain rounded-xl shadow-[0_0_50px_rgba(255,106,0,0.15)] border border-white/5 transition-opacity duration-500 ${
+                  lightboxLoading ? "opacity-0" : "opacity-100"
+                }`}
+                onLoad={() => setLightboxLoading(false)}
               />
 
               {/* Image Counter */}

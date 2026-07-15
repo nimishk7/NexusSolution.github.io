@@ -12,11 +12,20 @@ import Products from './components/Products';
 import Gallery from './components/Gallery';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+
+  // Always start at the top on every page load / refresh
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
   
   // Lock/unlock scroll during loading
   useEffect(() => {
@@ -109,7 +118,7 @@ function App() {
           <ContactUs />
         </main>
         <Footer />
-        
+        <ScrollToTop />
       </div>
     </HelmetProvider>
   );

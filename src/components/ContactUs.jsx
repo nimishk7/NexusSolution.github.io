@@ -92,7 +92,7 @@ const ContactUs = () => {
             className="glass-card p-8 md:p-12 rounded-3xl"
           >
             <h3 className="text-2xl font-bold mb-8 uppercase tracking-wide">
-              Send a Inquiry 
+              Send a Enquiry 
             </h3>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -221,11 +221,10 @@ const ContactUs = () => {
                       href="tel:+919284593597"
                       className="text-lg font-medium tracking-wider"
                     >
-                      +91 92845 93597 / +91 84688 37611
+                      +91 92845 93597 <br /> +91 84688 37611
                     </a>
                   </div>
                 </li>
-
                 <li className="flex items-start gap-4 hover:text-primary transition-colors cursor-pointer group text-white">
                   <div className="p-3 bg-white/5 rounded-full group-hover:bg-primary/20 transition-colors border border-white/10 group-hover:border-primary/50 shadow-sm shadow-black">
                     <HiOutlineMail size={24} />
@@ -237,6 +236,8 @@ const ContactUs = () => {
                       className="text-lg font-medium"
                     >
                       nexussangli24@gmail.com
+                      <br />
+                      enquiry@nexus-solutions.co.in
                     </a>
                   </div>
                 </li>
