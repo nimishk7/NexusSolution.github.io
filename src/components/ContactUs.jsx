@@ -221,7 +221,7 @@ const ContactUs = () => {
                       href="tel:+919284593597"
                       className="text-lg font-medium tracking-wider"
                     >
-                      +91 92845 93597 <br /> +91 84688 37611
+                      +91 92845 93597 <br /> +91 93071 40649
                     </a>
                   </div>
                 </li>
