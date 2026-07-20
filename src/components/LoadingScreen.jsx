@@ -58,7 +58,7 @@ const LoadingScreen = ({ onFinish }) => {
     const currentCenterY = logoRect.top + logoRect.height / 2;
     const dx = targetCenterX - currentCenterX;
     const dy = targetCenterY - currentCenterY;
-    const scaleRatio = flyTarget.height / 80; // 80px is the loading logo height
+    const scaleRatio = flyTarget.height / 280; // 280px is the loading logo height
     return { x: dx, y: dy, scale: scaleRatio, opacity: 0 };
   };
 
@@ -86,13 +86,13 @@ const LoadingScreen = ({ onFinish }) => {
             />
           </div>
 
-          {/* Center content: ring + logo */}
-          <div className="relative flex items-center justify-center">
+          {/* Center content: ring + logo — ring is fixed-size & centered; logo overflows so only X sits inside */}
+          <div className="relative flex items-center justify-center" style={{ width: `${radius * 2 + 24}px`, height: `${radius * 2 + 24}px`, overflow: 'visible' }}>
             {/* SVG ring drawn around the logo */}
             <svg
               width={radius * 2 + 24}
               height={radius * 2 + 24}
-              className="absolute"
+              className="absolute inset-0"
               style={{ transform: 'rotate(-90deg)' }}
             >
               {/* Static background track ring */}
@@ -134,7 +134,7 @@ const LoadingScreen = ({ onFinish }) => {
               src="/images/logo2.png"
               alt="Nexus Solutions"
               className="relative z-10 select-none pointer-events-none"
-              style={{ height: '80px', width: 'auto', objectFit: 'contain' }}
+              style={{ height: '280px', width: 'auto', objectFit: 'contain' }}
               initial={{ opacity: 0, scale: 0.75 }}
               animate={
                 isFlying

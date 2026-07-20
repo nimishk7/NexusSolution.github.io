@@ -92,10 +92,9 @@ const ProductCard = ({ product, onSelect }) => {
   return (
     <motion.div 
       variants={itemVariants}
-      whileHover={{ y: -8 }}
-      className="w-full sm:w-[380px] flex-shrink-0 snap-center group glass-card overflow-hidden relative transition-all duration-500 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_rgba(255,106,0,0.4)] perspective-1000"
+      className="w-full sm:w-[380px] flex-shrink-0 snap-center group glass-card overflow-hidden relative transition-all duration-200 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_rgba(255,106,0,0.4)] perspective-1000"
     >
-      <div className="h-64 md:h-80 w-full relative overflow-hidden">
+      <div className="h-64 md:h-80 w-full relative overflow-hidden rounded-t-2xl">
         <div className="absolute inset-0 bg-primary/20 z-10 mix-blend-overlay group-hover:bg-primary/0 transition-all duration-500" />
         
         {/* Sliding Images with cross-fade animation */}

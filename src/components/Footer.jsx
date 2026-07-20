@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaFacebookF,
   FaLinkedinIn,
   FaTwitter,
   FaInstagram,
 } from "react-icons/fa";
+import { AnimatePresence } from "framer-motion";
+import LegalModal from "./LegalModal";
+import { privacyPolicy, termsOfService } from "../data/legalContent";
 
 const Footer = () => {
+  const [openDoc, setOpenDoc] = useState(null); // null | privacyPolicy | termsOfService
   return (
     <footer className="bg-[#000000] text-white/70 border-t border-white/5 pt-16 pb-8 relative overflow-hidden">
       {/* Subtle Top Gradient */}
@@ -132,15 +136,28 @@ const Footer = () => {
             Reserved.
           </p>
           <div className="flex gap-6 text-xs uppercase tracking-widest text-white/40">
-            <a href="#" className="hover:text-white transition-colors">
+            <button
+              onClick={() => setOpenDoc(privacyPolicy)}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
               Privacy Policy
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
+            </button>
+            <button
+              onClick={() => setOpenDoc(termsOfService)}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
               Terms of Service
-            </a>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Legal Modals */}
+      <AnimatePresence>
+        {openDoc && (
+          <LegalModal doc={openDoc} onClose={() => setOpenDoc(null)} />
+        )}
+      </AnimatePresence>
     </footer>
   );
 };

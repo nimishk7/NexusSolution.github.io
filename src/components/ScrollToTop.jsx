@@ -30,7 +30,7 @@ const ScrollToTop = () => {
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
           aria-label="Scroll to top"
-          className="fixed bottom-8 right-8 z-[9000] w-12 h-12 flex items-center justify-center rounded-full bg-primary text-white shadow-[0_0_20px_rgba(255,106,0,0.5)] hover:shadow-[0_0_30px_rgba(255,106,0,0.75)] border border-primary/40 hover:bg-primary/90 transition-colors duration-200"
+          className="fixed bottom-15 right-8 z-[9000] w-12 h-12 flex items-center justify-center rounded-full bg-primary text-white shadow-[0_0_20px_rgba(255,106,0,0.5)] hover:shadow-[0_0_30px_rgba(255,106,0,0.75)] border border-primary/40 hover:bg-primary/90 transition-colors duration-200"
         >
           <HiChevronUp size={24} />
         </motion.button>
